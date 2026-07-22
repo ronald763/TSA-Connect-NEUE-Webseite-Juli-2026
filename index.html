@@ -923,10 +923,10 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
               action="https://formsubmit.co/ronaldschmidt95@gmail.com">
           <!-- Steuerfelder fuer FormSubmit -->
           <input type="hidden" name="_subject" value="Neuer Lead ueber die TSA-Connect-Webseite">
-          <!-- Kopie an die Firmenadresse ist bewusst deaktiviert, solange dort
-               die FormSubmit-Mails abgewiesen werden. Zum Aktivieren einfach
-               die naechste Zeile einkommentieren:
-          <input type="hidden" name="_cc" value="ronald@tsa-connect.de"> -->
+          <!-- Kopie an die Firmenadresse. Falls dort weiterhin nichts ankommt,
+               liegt es am Spamfilter des Mailanbieters, nicht an dieser Seite.
+               Zuverlaessiger Weg: Weiterleitung direkt in Gmail einrichten. -->
+          <input type="hidden" name="_cc" value="ronald@tsa-connect.de">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_next" id="nextUrl" value="">
