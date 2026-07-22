@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>E-Mail-Benachrichtigung freischalten</title>
+<!--
+=======================================================================
+  EINMALIGE FREISCHALTUNG DER E-MAIL-BENACHRICHTIGUNG
+  -------------------------------------------------------------------
+  Diese Seite ist NUR fuer Ronald und nirgends verlinkt.
+  Sie schickt eine Testanfrage an FormSubmit, OHNE danach
+  weiterzuleiten. Dadurch erscheint die Bestaetigungsseite von
+  FormSubmit direkt im Browser (statt nur als Mail, die im Spam
+  landen kann).
+  Nach erfolgreicher Freischaltung kann die Datei geloescht werden.
+=======================================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Arimo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#022b4c;--navy-900:#021d33;--blue:#0076f7;--teal:#24d3b5;--off:#f4f4f4;--grey:#878787}
+*{box-sizing:border-box}
+body{margin:0;background:var(--navy-900);color:#eaf2fb;font-family:'Arimo',Arial,sans-serif;
+  line-height:1.6;display:grid;place-items:center;min-height:100vh;padding:24px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:clamp(26px,5vw,42px);max-width:620px;width:100%}
+h1{font-family:'Poppins',sans-serif;font-size:clamp(1.4rem,4vw,2rem);margin:0 0 8px;color:#fff;line-height:1.15}
+.sub{color:#9db4cc;font-size:.95rem;margin:0 0 26px}
+ol{margin:0 0 26px;padding-left:20px;color:#cdddee}
+li{margin-bottom:12px}
+b{color:#fff}
+.mail{font-family:'Poppins',sans-serif;font-weight:700;color:var(--teal);word-break:break-all}
+button{font-family:'Poppins',sans-serif;font-weight:600;font-size:1rem;width:100%;
+  background:var(--blue);color:#fff;border:0;border-radius:11px;padding:16px 24px;cursor:pointer;
+  box-shadow:0 10px 24px -10px rgba(0,118,247,.7)}
+button:hover{transform:translateY(-2px)}
+.note{margin-top:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);
+  font-size:.86rem;color:#9db4cc}
+.hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>E-Mail-Benachrichtigung freischalten</h1>
+  <p class="sub">Diese Seite brauchst du nur ein einziges Mal.</p>
+
+  <ol>
+    <li>Unten auf den Button klicken. Damit geht eine Testanfrage raus.</li>
+    <li>Es öffnet sich eine Seite von <b>FormSubmit</b>. Dort steht ein Bestätigungslink oder ein Code für <span class="mail">ronald@tsa-connect.de</span>. Folge den Anweisungen auf dieser Seite.</li>
+    <li>Schau parallel in dein Postfach, auch in den <b>Spam-Ordner</b>. Absender ist FormSubmit.</li>
+    <li>Sobald bestätigt: Formular auf der Webseite testen. Ab jetzt kommt jede Anfrage per Mail bei dir an.</li>
+  </ol>
+
+  <!-- Bewusst OHNE _next: die Bestaetigungsseite soll sichtbar werden -->
+  <form method="POST" action="https://formsubmit.co/ronald@tsa-connect.de">
+    <input type="hidden" name="_subject" value="Freischaltung der TSA-Connect-Webseite">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="Hinweis" value="Testanfrage zur einmaligen Freischaltung der E-Mail-Benachrichtigung.">
+    <input type="hidden" name="Unternehmen" value="TSA Connect GmbH (Test)">
+    <input type="hidden" name="Name" value="Ronald Schmidt (Test)">
+    <input type="hidden" name="Telefon" value="0211 86089246">
+    <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off">
+    <button type="submit">Jetzt freischalten</button>
+  </form>
+
+  <p class="note">Nach erfolgreicher Freischaltung kann diese Datei gelöscht werden. Sie ist nirgends auf der Webseite verlinkt und wird von Suchmaschinen ignoriert.</p>
+</div>
+</body>
+</html>

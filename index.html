@@ -920,6 +920,7 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_next" id="nextUrl" value="">
+          <input type="hidden" name="_replyto" id="replyTo" value="">
           <div class="field">
             <label for="c">Unternehmen*</label>
             <input id="c" name="Unternehmen" type="text" autocomplete="organization" required>
@@ -1144,6 +1145,11 @@ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
     }
     // Spam-Falle ausgefuellt = Bot: nichts senden, aber nichts verraten
     if(form.querySelector('[name="_honey"]').value){ showDanke(); return; }
+
+    // Antwortadresse = E-Mail des Interessenten (Antworten gehen direkt an ihn)
+    const rt=document.getElementById('replyTo');
+    const mailFeld=form.querySelector('[name="E-Mail"]');
+    if(rt&&mailFeld) rt.value=mailFeld.value.trim();
 
     btn.disabled=true; const label=btn.textContent; btn.textContent='Wird gesendet...';
 
