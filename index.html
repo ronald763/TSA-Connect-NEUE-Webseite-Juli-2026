@@ -92,7 +92,7 @@ footer .logo img{height:42px}
   radial-gradient(100% 80% at 96% 92%,rgba(36,211,181,.12),transparent 50%),var(--navy)}
 .hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,64px);align-items:center;padding-block:clamp(52px,7vw,92px)}
 .hero h1{font-size:clamp(2rem,4.7vw,3.4rem);color:#fff;letter-spacing:-.02em}
-.hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .hero .lead{color:#c3d6ec;margin-top:22px;max-width:54ch}
 .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
 .ticks{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:12px}
@@ -484,7 +484,7 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
   <div class="wrap">
     <div class="reveal in">
       <p class="eyebrow">Für inhabergeführte Betriebe · 15 bis 90 Mitarbeiter</p>
-      <h1>Jeder in der Region kennt deinen Betrieb. Aber keiner weiß, <span class="hl">warum</span> man ausgerechnet bei dir arbeiten sollte.</h1>
+      <h1>Jeder in der Region kennt deinen Betrieb. <span class="hl">Aber keiner weiß, warum man ausgerechnet bei dir arbeiten sollte.</span></h1>
       <p class="lead">Wir machen sichtbar, was deine besten Mitarbeiter bei dir hält, und holen dir genau davon mehr. Kein 08/15-Recruiting, sondern die richtigen Leute, die bleiben.</p>
       <ul class="ticks">
         <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#24d3b5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Wenige, dafür passende Bewerbungen mit echter Wechselabsicht statt Stapel voller Quereinsteiger.</li>
@@ -1072,12 +1072,15 @@ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
 /* ==========================================================
    KONTAKTFORMULAR
    ----------------------------------------------------------
-   >>> HIER DEINEN SCHLÜSSEL EINSETZEN <<<
-   1. auf web3forms.com die Adresse ronald@tsa-connect.de eintragen
-   2. den per Mail zugeschickten Access Key kopieren
-   3. unten zwischen die Anführungszeichen einsetzen, speichern, hochladen
+   Versand laeuft ueber FormSubmit. Es ist KEIN Schluessel im Code noetig.
+   EINMALIGE FREISCHALTUNG (nur beim allerersten Mal):
+   1. Formular auf der fertigen Seite einmal selbst ausfuellen und absenden
+   2. FormSubmit schickt eine Mail an ronald@tsa-connect.de
+   3. In der Mail auf den Bestaetigungslink klicken
+   Ab dann landet jede Anfrage automatisch im Postfach.
+   Empfaenger aendern? Einfach die Adresse in EMPFAENGER unten anpassen.
    ========================================================== */
-const ACCESS_KEY = "HIER_DEINEN_ACCESS_KEY_EINSETZEN";
+const EMPFAENGER = "ronald@tsa-connect.de";
 
 (function(){
   const form=document.getElementById('leadForm'); if(!form) return;
@@ -1121,33 +1124,33 @@ const ACCESS_KEY = "HIER_DEINEN_ACCESS_KEY_EINSETZEN";
       if(first) first.scrollIntoView({block:'center',behavior:'smooth'});
       return;
     }
-    if(!ACCESS_KEY||ACCESS_KEY.indexOf('HIER_DEINEN')===0){
-      showErr('Das Formular ist noch nicht scharf geschaltet (Access Key fehlt). Schreib uns solange direkt an '+mailFallback+'.');
-      return;
-    }
-
     btn.disabled=true; const label=btn.textContent; btn.textContent='Wird gesendet...';
     const fd=new FormData(form);
+
+    // Spam-Falle: ausgefuellt = Bot. Wir tun so, als waere alles gut, senden aber nichts.
+    if(fd.get('botcheck')){
+      live.style.display='none'; danke.classList.add('on'); return;
+    }
+
     const payload={
-      access_key:ACCESS_KEY,
-      subject:'Neuer Lead über die TSA-Connect-Webseite',
-      from_name:'TSA Connect Webseite',
+      _subject:'Neuer Lead ueber die TSA-Connect-Webseite',
+      _template:'table',
+      _captcha:'false',
       Unternehmen:fd.get('Unternehmen'),
       Name:fd.get('Name'),
       'E-Mail':fd.get('E-Mail'),
       Telefon:fd.get('Telefon'),
-      botcheck:fd.get('botcheck')?'true':'',
       Eingegangen:new Date().toLocaleString('de-DE')
     };
 
     try{
-      const res=await fetch('https://api.web3forms.com/submit',{
+      const res=await fetch('https://formsubmit.co/ajax/'+encodeURIComponent(EMPFAENGER),{
         method:'POST',
         headers:{'Content-Type':'application/json',Accept:'application/json'},
         body:JSON.stringify(payload)
       });
       const data=await res.json().catch(()=>({}));
-      if(res.ok && data.success){
+      if(res.ok && (data.success===true||data.success==='true')){
         live.style.display='none';
         danke.classList.add('on');
         danke.scrollIntoView({block:'center',behavior:'smooth'});
