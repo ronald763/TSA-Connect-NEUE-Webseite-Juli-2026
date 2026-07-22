@@ -40,32 +40,61 @@ button:hover{transform:translateY(-2px)}
 .note{margin-top:22px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);
   font-size:.86rem;color:#9db4cc}
 .hp{position:absolute;left:-9999px}
+.warn{background:rgba(36,211,181,.1);border:1px solid rgba(36,211,181,.35);border-radius:12px;
+  padding:18px 20px;margin:0 0 24px;font-size:.92rem;color:#cdddee}
+.warn b{display:block;font-family:'Poppins',sans-serif;color:var(--teal);margin-bottom:6px}
+.lbl{display:block;font-family:'Poppins',sans-serif;font-weight:600;font-size:.84rem;color:#fff;margin-bottom:8px}
+.inp{width:100%;padding:14px 16px;border-radius:11px;border:1.5px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.06);color:#fff;font-family:'Arimo',sans-serif;font-size:1rem;margin-bottom:16px}
+.inp:focus{outline:none;border-color:var(--teal)}
 </style>
 </head>
 <body>
 <div class="card">
   <h1>E-Mail-Benachrichtigung freischalten</h1>
-  <p class="sub">Diese Seite brauchst du nur ein einziges Mal.</p>
+  <p class="sub">Diese Seite brauchst du nur, bis die Benachrichtigung läuft.</p>
+
+  <div class="warn">
+    <b>Zuerst kurz prüfen</b>
+    Schick von einer beliebigen anderen Adresse (Handy, Gmail, GMX) eine Mail an
+    <span class="mail">ronald@tsa-connect.de</span>. Kommt sie <b>nicht</b> an, existiert das Postfach
+    noch nicht. Dann kann auch keine Bestätigung ankommen, und du musst das Postfach
+    erst bei deinem Domain-Anbieter anlegen.
+  </div>
 
   <ol>
-    <li>Unten auf den Button klicken. Damit geht eine Testanfrage raus.</li>
-    <li>Es öffnet sich eine Seite von <b>FormSubmit</b>. Dort steht ein Bestätigungslink oder ein Code für <span class="mail">ronald@tsa-connect.de</span>. Folge den Anweisungen auf dieser Seite.</li>
-    <li>Schau parallel in dein Postfach, auch in den <b>Spam-Ordner</b>. Absender ist FormSubmit.</li>
-    <li>Sobald bestätigt: Formular auf der Webseite testen. Ab jetzt kommt jede Anfrage per Mail bei dir an.</li>
+    <li>Trag unten die Adresse ein, an die die Benachrichtigungen gehen sollen.
+        <b>Tipp für den Test:</b> Nimm zuerst eine Adresse, von der du sicher weißt,
+        dass sie funktioniert (z. B. deine Gmail-Adresse). So siehst du sofort,
+        ob die Strecke insgesamt läuft.</li>
+    <li>Auf <b>Jetzt freischalten</b> klicken. Es geht eine Testanfrage raus.</li>
+    <li>Es öffnet sich eine Seite von <b>FormSubmit</b>. Lies genau, was dort steht,
+        und folge den Anweisungen.</li>
+    <li>Postfach prüfen, auch den <b>Spam-Ordner</b>. Absender ist FormSubmit.</li>
   </ol>
 
-  <!-- Bewusst OHNE _next: die Bestaetigungsseite soll sichtbar werden -->
-  <form method="POST" action="https://formsubmit.co/ronald@tsa-connect.de">
+  <form method="POST" id="actForm">
+    <label class="lbl" for="ziel">Benachrichtigungen sollen hier ankommen:</label>
+    <input class="inp" type="email" id="ziel" value="ronald@tsa-connect.de" required
+           autocomplete="email" spellcheck="false">
     <input type="hidden" name="_subject" value="Freischaltung der TSA-Connect-Webseite">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="Hinweis" value="Testanfrage zur einmaligen Freischaltung der E-Mail-Benachrichtigung.">
+    <input type="hidden" name="Hinweis" value="Testanfrage zur Freischaltung der E-Mail-Benachrichtigung.">
     <input type="hidden" name="Unternehmen" value="TSA Connect GmbH (Test)">
     <input type="hidden" name="Name" value="Ronald Schmidt (Test)">
     <input type="hidden" name="Telefon" value="0211 86089246">
     <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off">
     <button type="submit">Jetzt freischalten</button>
   </form>
+
+  <script>
+  document.getElementById('actForm').addEventListener('submit',function(e){
+    var mail=document.getElementById('ziel').value.trim();
+    if(!mail){ e.preventDefault(); return; }
+    this.action='https://formsubmit.co/'+encodeURIComponent(mail);
+  });
+  </script>
 
   <p class="note">Nach erfolgreicher Freischaltung kann diese Datei gelöscht werden. Sie ist nirgends auf der Webseite verlinkt und wird von Suchmaschinen ignoriert.</p>
 </div>
