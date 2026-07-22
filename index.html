@@ -913,10 +913,19 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
         <p class="fh">Kostenfreies Konzeptgespräch anfordern</p>
         <p class="fsub">Trag dich ein, wir melden uns für einen Rückruf und stimmen einen Termin ab.</p>
         <div class="formerr" id="formErr"></div>
+        <!-- ===================================================================
+             EMPFAENGER DER LEAD-BENACHRICHTIGUNG
+             In der naechsten Zeile steht die Hauptadresse. Dorthin geht die Mail.
+             Wichtig: Diese Adresse muss bei FormSubmit einmal freigeschaltet sein.
+             Aktuell eingetragen: ronaldschmidt95@gmail.com (bei FormSubmit freigeschaltet)
+             ==================================================================== -->
         <form id="leadForm" novalidate method="POST"
-              action="https://formsubmit.co/ronald@tsa-connect.de">
+              action="https://formsubmit.co/ronaldschmidt95@gmail.com">
           <!-- Steuerfelder fuer FormSubmit -->
           <input type="hidden" name="_subject" value="Neuer Lead ueber die TSA-Connect-Webseite">
+          <!-- Kopie an die Firmenadresse. Kommt sie dort nicht an, ist der Lead
+               ueber die Hauptadresse oben trotzdem gesichert. -->
+          <input type="hidden" name="_cc" value="ronald@tsa-connect.de">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_next" id="nextUrl" value="">
