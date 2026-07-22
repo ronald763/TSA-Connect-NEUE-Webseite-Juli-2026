@@ -92,7 +92,7 @@ footer .logo img{height:42px}
   radial-gradient(100% 80% at 96% 92%,rgba(36,211,181,.12),transparent 50%),var(--navy)}
 .hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,64px);align-items:center;padding-block:clamp(52px,7vw,92px)}
 .hero h1{font-size:clamp(2rem,4.7vw,3.4rem);color:#fff;letter-spacing:-.02em}
-.hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero .lead{color:#c3d6ec;margin-top:22px;max-width:54ch}
 .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
 .ticks{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:12px}
@@ -484,7 +484,7 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
   <div class="wrap">
     <div class="reveal in">
       <p class="eyebrow">Für inhabergeführte Betriebe · 15 bis 90 Mitarbeiter</p>
-      <h1>Jeder in der Region kennt deinen Betrieb. <span class="hl">Aber keiner weiß, warum man ausgerechnet bei dir arbeiten sollte.</span></h1>
+      <h1>Jeder in der Region kennt deinen Betrieb. Aber keiner weiß, <span class="hl">warum</span> man ausgerechnet bei dir arbeiten sollte.</h1>
       <p class="lead">Wir machen sichtbar, was deine besten Mitarbeiter bei dir hält, und holen dir genau davon mehr. Kein 08/15-Recruiting, sondern die richtigen Leute, die bleiben.</p>
       <ul class="ticks">
         <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#24d3b5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Wenige, dafür passende Bewerbungen mit echter Wechselabsicht statt Stapel voller Quereinsteiger.</li>
@@ -913,7 +913,13 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
         <p class="fh">Kostenfreies Konzeptgespräch anfordern</p>
         <p class="fsub">Trag dich ein, wir melden uns für einen Rückruf und stimmen einen Termin ab.</p>
         <div class="formerr" id="formErr"></div>
-        <form id="leadForm" novalidate>
+        <form id="leadForm" novalidate method="POST"
+              action="https://formsubmit.co/ronald@tsa-connect.de">
+          <!-- Steuerfelder fuer FormSubmit -->
+          <input type="hidden" name="_subject" value="Neuer Lead ueber die TSA-Connect-Webseite">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" id="nextUrl" value="">
           <div class="field">
             <label for="c">Unternehmen*</label>
             <input id="c" name="Unternehmen" type="text" autocomplete="organization" required>
@@ -935,7 +941,7 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
             <span class="msg">Bitte eine erreichbare Telefonnummer angeben.</span>
           </div>
           <!-- Spam-Falle, für Menschen unsichtbar -->
-          <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off">
+          <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off">
           <label class="consent"><input type="checkbox" id="dsgvo" required> Ich habe die <a href="https://tsa-datenschutz.vercel.app/" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Datenschutzerklärung</a> gelesen und akzeptiere sie.*</label>
           <span class="msg" id="dsgvoMsg" style="display:none;color:#c0392b;font-size:.78rem;margin:-14px 0 14px">Bitte bestätige die Datenschutzerklärung.</span>
           <button type="submit" class="btn btn-primary" id="submitBtn">Rückruf anfordern &amp; Termin vereinbaren</button>
@@ -1072,16 +1078,17 @@ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
 /* ==========================================================
    KONTAKTFORMULAR
    ----------------------------------------------------------
-   Versand laeuft ueber FormSubmit. Es ist KEIN Schluessel im Code noetig.
-   EINMALIGE FREISCHALTUNG (nur beim allerersten Mal):
-   1. Formular auf der fertigen Seite einmal selbst ausfuellen und absenden
-   2. FormSubmit schickt eine Mail an ronald@tsa-connect.de
-   3. In der Mail auf den Bestaetigungslink klicken
-   Ab dann landet jede Anfrage automatisch im Postfach.
-   Empfaenger aendern? Einfach die Adresse in EMPFAENGER unten anpassen.
+   Versand ueber FormSubmit, KEIN Schluessel im Code noetig.
+   Zwei Wege, damit es in jedem Fall ankommt:
+     1. Erst im Hintergrund (Seite bleibt stehen, Danke-Text erscheint)
+     2. Klappt das nicht, wird das Formular ganz normal abgeschickt.
+        Danach kommt der Besucher automatisch zurueck auf die Seite
+        und sieht ebenfalls den Danke-Text.
+   EINMALIG: Beim allerersten Absenden verlangt FormSubmit eine
+   Bestaetigung der Empfaengeradresse (Seite oder Mail). Einmal
+   bestaetigen, danach laeuft alles automatisch.
+   Empfaenger aendern: im action-Attribut des Formulars weiter oben.
    ========================================================== */
-const EMPFAENGER = "ronald@tsa-connect.de";
-
 (function(){
   const form=document.getElementById('leadForm'); if(!form) return;
   const btn=document.getElementById('submitBtn');
@@ -1090,8 +1097,19 @@ const EMPFAENGER = "ronald@tsa-connect.de";
   const danke=document.getElementById('formDanke');
   const dsgvo=document.getElementById('dsgvo');
   const dsgvoMsg=document.getElementById('dsgvoMsg');
+  const nextUrl=document.getElementById('nextUrl');
 
-  const mailFallback='<a href="mailto:ronald@tsa-connect.de">ronald@tsa-connect.de</a>';
+  // Rueckkehr-Adresse fuer den normalen Versand
+  const backUrl=location.origin+location.pathname+'#danke';
+  if(nextUrl) nextUrl.value=backUrl;
+
+  function showDanke(){
+    if(live) live.style.display='none';
+    if(danke){ danke.classList.add('on');
+      danke.scrollIntoView({block:'center',behavior:'smooth'}); }
+  }
+  // Kommt der Besucher nach dem normalen Versand zurueck: Danke zeigen
+  if(location.hash==='#danke') setTimeout(showDanke,60);
 
   function showErr(msg){ errBox.innerHTML=msg; errBox.classList.add('on'); }
   function clearErr(){ errBox.classList.remove('on'); errBox.innerHTML=''; }
@@ -1101,7 +1119,7 @@ const EMPFAENGER = "ronald@tsa-connect.de";
     form.querySelectorAll('input[required]').forEach(i=>{
       if(i.type==='checkbox') return;
       const val=i.value.trim();
-      let bad = !val;
+      let bad=!val;
       if(!bad && i.type==='email') bad=!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val);
       if(!bad && i.type==='tel')   bad=val.replace(/\D/g,'').length<6;
       i.classList.toggle('bad',bad);
@@ -1124,43 +1142,30 @@ const EMPFAENGER = "ronald@tsa-connect.de";
       if(first) first.scrollIntoView({block:'center',behavior:'smooth'});
       return;
     }
+    // Spam-Falle ausgefuellt = Bot: nichts senden, aber nichts verraten
+    if(form.querySelector('[name="_honey"]').value){ showDanke(); return; }
+
     btn.disabled=true; const label=btn.textContent; btn.textContent='Wird gesendet...';
-    const fd=new FormData(form);
 
-    // Spam-Falle: ausgefuellt = Bot. Wir tun so, als waere alles gut, senden aber nichts.
-    if(fd.get('botcheck')){
-      live.style.display='none'; danke.classList.add('on'); return;
-    }
-
-    const payload={
-      _subject:'Neuer Lead ueber die TSA-Connect-Webseite',
-      _template:'table',
-      _captcha:'false',
-      Unternehmen:fd.get('Unternehmen'),
-      Name:fd.get('Name'),
-      'E-Mail':fd.get('E-Mail'),
-      Telefon:fd.get('Telefon'),
-      Eingegangen:new Date().toLocaleString('de-DE')
-    };
-
+    // Weg 1: im Hintergrund senden
+    let ok=false;
     try{
-      const res=await fetch('https://formsubmit.co/ajax/'+encodeURIComponent(EMPFAENGER),{
+      const res=await fetch(form.action,{
         method:'POST',
-        headers:{'Content-Type':'application/json',Accept:'application/json'},
-        body:JSON.stringify(payload)
+        headers:{Accept:'application/json'},
+        body:new FormData(form)
       });
-      const data=await res.json().catch(()=>({}));
-      if(res.ok && (data.success===true||data.success==='true')){
-        live.style.display='none';
-        danke.classList.add('on');
-        danke.scrollIntoView({block:'center',behavior:'smooth'});
-      }else{
-        throw new Error(data.message||'Senden fehlgeschlagen');
+      if(res.ok){
+        const data=await res.json().catch(()=>null);
+        ok = !data || data.success===true || data.success==='true';
       }
-    }catch(err){
-      showErr('Das hat leider nicht geklappt. Bitte versuch es nochmal oder melde dich direkt: '+mailFallback+' / <a href="tel:+4921186089246">0211 86089246</a>.');
-      btn.disabled=false; btn.textContent=label;
-    }
+    }catch(err){ ok=false; }
+
+    if(ok){ showDanke(); return; }
+
+    // Weg 2: ganz normal abschicken (umgeht diesen Handler)
+    btn.textContent='Wird gesendet...';
+    HTMLFormElement.prototype.submit.call(form);
   });
 })();
 </script>
