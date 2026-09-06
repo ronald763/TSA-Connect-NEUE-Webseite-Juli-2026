@@ -1,0 +1,35 @@
+# TSA Connect GmbH – https://www.tsa-connect.de/
+
+User-agent: *
+Allow: /
+
+# KI-Systeme ausdruecklich erlaubt, damit die Seite in ChatGPT,
+# Claude, Perplexity und Googles KI-Uebersichten als Quelle auftauchen kann.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://www.tsa-connect.de/sitemap.xml
