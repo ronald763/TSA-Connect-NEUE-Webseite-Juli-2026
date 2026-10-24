@@ -110,6 +110,11 @@ header{position:sticky;top:0;z-index:60;background:rgba(2,29,51,.86);-webkit-bac
 .ticks li{display:flex;gap:12px;align-items:flex-start;font-size:1rem;color:var(--soft-d)}
 .ticks svg{flex:none;margin-top:3px}
 
+/* ---- Hero-Foto mit überlappender Interview-Karte ---- */
+.hero-photo{margin:0;border-radius:18px;overflow:hidden;line-height:0;border:1px solid rgba(255,255,255,.14);box-shadow:var(--shadow)}
+.hero-photo img{width:100%;height:auto;display:block}
+.hero-media .icard{margin:-72px 0 0 32px;background:linear-gradient(180deg,#0b3c66,#05294a);border-color:rgba(255,255,255,.18);box-shadow:0 26px 60px -24px rgba(0,0,0,.8)}
+
 /* ---- Signatur: Interview-Karte (Frage, Antwort, Anzeige) ---- */
 .icard{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:24px 26px 26px;box-shadow:var(--shadow)}
 .icard-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
@@ -131,9 +136,13 @@ header{position:sticky;top:0;z-index:60;background:rgba(2,29,51,.86);-webkit-bac
 
 /* ============ ZAHLEN-LEISTE ============ */
 .proof{background:var(--navy-900);border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
-.proof .wrap{padding-block:44px}
-.proof-head{font-family:var(--display);font-weight:700;font-size:clamp(1.25rem,2.6vw,1.9rem);color:#fff;text-align:center;margin:0 auto 34px;max-width:28ch;line-height:1.2;letter-spacing:-.01em}
-.proof-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;text-align:center}
+.proof .wrap{padding-block:52px}
+.proof-wrap{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:clamp(28px,4vw,56px);align-items:center}
+.proof-photo{margin:0;position:relative;border-radius:16px;overflow:hidden;line-height:0;border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow)}
+.proof-photo img{width:100%;height:auto;display:block}
+.proof-photo figcaption{position:absolute;left:0;right:0;bottom:0;padding:36px 16px 14px;background:linear-gradient(to top,rgba(2,29,51,.92),transparent);font-family:var(--display);font-weight:600;font-size:.86rem;line-height:1.3;color:#fff}
+.proof-head{font-family:var(--display);font-weight:700;font-size:clamp(1.25rem,2.4vw,1.8rem);color:#fff;text-align:left;margin:0 0 30px;max-width:30ch;line-height:1.2;letter-spacing:-.01em}
+.proof-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 32px;text-align:left}
 .proof-grid .n{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,4.4vw,3rem);background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.08}
 .proof-grid .n small{font-size:.5em;font-weight:700;letter-spacing:0}
 .proof-grid .l{font-size:.86rem;color:var(--muted-d);margin-top:8px}
@@ -300,7 +309,14 @@ header{position:sticky;top:0;z-index:60;background:rgba(2,29,51,.86);-webkit-bac
 .pdf-sec{background:
   radial-gradient(110% 90% at 92% 0%,rgba(0,118,247,.2),transparent 55%),
   radial-gradient(90% 80% at 0% 100%,rgba(36,211,181,.12),transparent 55%),var(--navy)}
-.pdf-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"head list" "cta list";gap:28px 56px;align-items:start}
+.pdf-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"head list" "img img" "cta cta";gap:28px 56px;align-items:start}
+.pdf-teaser{grid-area:img;margin:12px 0 0}
+.pdf-teaser-img{position:relative;border-radius:16px;overflow:hidden;line-height:0;border:1px solid rgba(255,255,255,.14);box-shadow:var(--shadow)}
+.pdf-teaser-img img{width:100%;height:auto;display:block}
+.pdf-lock{position:absolute;left:54.1%;right:1.7%;top:10.7%;bottom:2.2%;display:grid;place-items:center;padding:10px}
+.pdf-lock span{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;font-family:var(--display);font-weight:600;font-size:.92rem;line-height:1.25;padding:10px 18px;border-radius:100px;box-shadow:0 12px 30px -10px rgba(0,0,0,.6)}
+.pdf-lock svg{flex:none}
+.pdf-teaser figcaption{margin-top:12px;font-size:.88rem;color:var(--muted-d)}
 .pdf-head{grid-area:head} .pdf-cta{grid-area:cta}
 .pdf-head h2{font-size:clamp(1.8rem,4vw,2.8rem)}
 .pdf-head .lead{margin-top:16px}
@@ -415,13 +431,16 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
 @media (max-width:1024px){
   .hero .wrap{grid-template-columns:1fr}
   .hero-media{max-width:560px;width:100%}
+  .proof-wrap{grid-template-columns:1fr}
+  .proof-photo{max-width:560px;aspect-ratio:4/3}
+  .proof-photo img{height:100%;object-fit:cover;object-position:50% 46%}
   .proof-grid,.asteps{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 16px}
   .refgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .tcards{grid-template-columns:1fr}
   .paths,.qa-grid,.quotes,.fl-grid,.kt-lead,.video-wrap,.flagship,.about .wrap,.contact .wrap,footer .wrap{grid-template-columns:1fr}
   .tstep{grid-template-columns:64px minmax(0,1fr);gap:10px 22px}
   .tstep p{grid-column:2}
-  .pdf-grid{grid-template-columns:1fr;grid-template-areas:"head" "list" "cta"}
+  .pdf-grid{grid-template-columns:1fr;grid-template-areas:"head" "list" "img" "cta"}
   .ways{grid-template-columns:1fr}
   .ways .arrow{transform:rotate(90deg);margin:20px auto 24px}
   .glist{grid-template-columns:1fr}
@@ -462,6 +481,13 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
   .ticks{gap:14px;margin-top:22px}
   .ticks li{font-size:.96rem}
   .icard{padding:20px 18px 20px;border-radius:16px}
+  .hero-media .icard{margin:-34px 10px 0}
+  .hero-photo{border-radius:14px}
+  .proof-photo figcaption{font-size:.8rem;padding:30px 14px 12px}
+  .pdf-lock{padding:6px}
+  .pdf-lock span{flex-direction:column;gap:3px;text-align:center;font-size:.68rem;padding:8px 10px;border-radius:10px}
+  .pdf-lock svg{width:13px;height:13px}
+  .pdf-teaser figcaption{font-size:.82rem}
   .icard-top{margin-bottom:18px}
   .wave{display:none}
 
@@ -729,6 +755,13 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
 
     <!-- Rechte Seite: aus einem echten Interview (Frage, Antwort, Anzeige) -->
     <aside class="hero-media reveal in" aria-label="Beispiel aus einem echten Mitarbeiter-Interview">
+      <figure class="hero-photo">
+        <picture>
+          <source srcset="img/interview-hero.webp" type="image/webp">
+          <img src="img/interview-hero.jpg" width="1600" height="893" decoding="async"
+               alt="Ronald Schmidt im Mitarbeiter-Interview: Ihm gegenüber sitzt ein Mitarbeiter, auf dem Tisch steht nur ein Mikrofon für die Tonaufnahme">
+        </picture>
+      </figure>
       <div class="icard">
         <div class="icard-top">
           <span class="rec"><i aria-hidden="true"></i>Aus einem echten Interview</span>
@@ -753,13 +786,23 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
 
 <!-- ============ ZAHLEN-LEISTE ============ -->
 <section class="proof" aria-label="Ergebnisse">
-  <div class="wrap">
+  <div class="wrap proof-wrap">
+    <figure class="proof-photo">
+      <picture>
+        <source srcset="img/handshake-mollendyk.webp" type="image/webp">
+        <img src="img/handshake-mollendyk.jpg" width="900" height="1125" loading="lazy" decoding="async"
+             alt="Ronald Schmidt und Franz Mollendyk beim Handschlag vor einem LKW des Baustoffhandels Mollendyk in Rheine">
+      </picture>
+      <figcaption>Vor Ort bei Franz Mollendyk in Rheine</figcaption>
+    </figure>
+    <div class="proof-main">
     <p class="proof-head">Ergebnisse aus der Praxis: <span class="hl">vom Baustoffhändler bis Daimler Truck.</span></p>
     <div class="proof-grid">
       <div><div class="n">4 <small>in ~20&nbsp;Tagen</small></div><div class="l">Nutzfahrzeug-Mechatroniker eingestellt bei Daimler Truck, Frankfurt und drei weitere Standorte</div></div>
       <div><div class="n">3 <small>LKW&#8209;Fahrer</small></div><div class="l">eingestellt bei Mollendyk, Baustoffhandel in Rheine. Die ersten beiden nach 11 Tagen.</div></div>
       <div><div class="n">8 <small>in ~80&nbsp;Tagen</small></div><div class="l">Lackierer und Karosseriebauer eingestellt bei der Richter GmbH, Leverkusen</div></div>
       <div><div class="n">1</div><div class="l">Partnerbetrieb pro Branche und Region. Kein Wettbewerber vor der Tür.</div></div>
+    </div>
     </div>
   </div>
 </section>
@@ -936,20 +979,22 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
   </div>
 </section>
 
-<!-- ============ VIDEO FRANZ MOLLENDYK ============
-     Sobald das Video auf YouTube liegt: Video-ID in data-yt eintragen
-     und data-has-video auf "true" setzen. Bis dahin sind Video, Hinweis
-     und der Satz zum Video ausgeblendet. -->
-<section class="section owner" id="mollendyk" data-has-video="false">
+<!-- ============ VIDEO FRANZ MOLLENDYK ============ -->
+<section class="section owner" id="mollendyk" data-has-video="true">
   <div class="wrap">
     <div class="shead reveal">
       <p class="eyebrow">Und das sagt sein Chef</p>
-      <h2>„Ich wollte schon fast meinen Laden verkaufen und mich selbst bewerben.“</h2>
+      <h2>„Mein Fahrer hat Gründe genannt, die mir so gar nicht bekannt waren.“</h2>
       <p class="lead">Franz Mollendyk führt den Baustoffhandel in Rheine in vierter Generation.<span class="needs-video"> Im Video erzählt er, warum er Recruiting-Anbietern erst einmal misstraut hat, was das Interview mit seinem Fahrer verändert hat und was am Ende dabei rauskam.</span></p>
     </div>
     <div class="vsolo needs-video">
-      <div class="vplayer reveal" data-yt="">
+      <div class="vplayer reveal" data-yt="AJ54QFl-ZRo">
         <div class="vposter" role="button" tabindex="0" aria-label="Video abspielen: Franz Mollendyk über die Zusammenarbeit">
+          <picture>
+            <source srcset="img/mollendyk-poster.webp" type="image/webp">
+            <img src="img/mollendyk-poster.jpg" width="1600" height="900" loading="lazy" decoding="async"
+                 alt="Franz Mollendyk und Ronald Schmidt im Büro des Baustoffhandels Mollendyk">
+          </picture>
           <span class="vbadge">Kundenstimme</span>
           <span class="vcap">Franz Mollendyk, Baustoffhandel Mollendyk in Rheine</span>
         </div>
@@ -1117,6 +1162,17 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
       <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#24d3b5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> das komplette Interview mit dem LKW-Fahrer: meine Fragen, seine Antworten, die alte Anzeige neben der neuen</li>
       <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#24d3b5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> mit welcher Frage eine Anzeige die Falschen aussortiert, bevor sie sich überhaupt bewerben</li>
     </ul>
+    <figure class="pdf-teaser reveal">
+      <div class="pdf-teaser-img">
+        <picture>
+          <source srcset="img/fahrer-vorher-nachher.webp" type="image/webp">
+          <img src="img/fahrer-vorher-nachher.jpg" width="1400" height="584" loading="lazy" decoding="async"
+               alt="Seite 14 aus dem PDF: links die alte Anzeige für LKW-Fahrer, rechts die neue Anzeige, unscharf. Die neue Version steht vollständig im PDF.">
+        </picture>
+        <span class="pdf-lock"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#24d3b5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Vollständig im PDF</span></span>
+      </div>
+      <figcaption>Seite 14 aus dem PDF: links die alte Anzeige für LKW-Fahrer, rechts die neue aus dem Mitarbeiter-Interview.</figcaption>
+    </figure>
     <div class="pdf-cta reveal">
       <a href="https://mitarbeiter-interviews.de/?utm_source=tsa-connect.de&amp;utm_medium=website&amp;utm_campaign=pdf&amp;utm_content=pdf-abschnitt" class="btn btn-primary" target="_blank" rel="noopener">Das 21-seitige PDF anfordern</a>
     </div>
