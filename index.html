@@ -567,6 +567,19 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
 @media (max-height:480px) and (orientation:landscape){
   .nav.open ul{max-height:calc(100vh - var(--hh));overflow-y:auto}
 }
+
+/* Cookie-Hinweis: Google Analytics startet erst nach Zustimmung */
+.cc{position:fixed;z-index:80;right:24px;bottom:24px;width:min(440px,calc(100% - 48px));background:var(--navy-900);color:var(--soft-d);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);box-shadow:0 24px 60px -20px rgba(0,0,0,.55);padding:22px 22px 20px;font-size:.92rem;line-height:1.55}
+.cc[hidden]{display:none}
+.cc p{margin:0 0 16px}
+.cc .cc-t{font-family:var(--display);font-weight:600;font-size:1.05rem;line-height:1.3;color:#fff;margin:0 0 8px}
+.cc a{color:var(--teal);text-decoration:underline;text-underline-offset:2px}
+.cc-btns{display:flex;gap:10px}
+.cc-btn{flex:1 1 0;font-family:var(--display);font-weight:600;font-size:.95rem;padding:12px 16px;border-radius:11px;border:1.5px solid #fff;background:#fff;color:var(--navy);cursor:pointer;transition:background .2s ease,border-color .2s ease}
+.cc-btn:hover{background:var(--teal);border-color:var(--teal)}
+.cc-btn:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){.cc{animation:ccIn .35s ease-out}@keyframes ccIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}}
+@media (max-width:640px){.cc{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));width:auto;padding:18px 18px 16px;font-size:.88rem}}
 </style>
 <script type="application/ld+json">
 {
@@ -1353,11 +1366,59 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
     <nav class="flinks" aria-label="Fußzeile">
       <a href="#methode">Methode</a><a href="#vorort">Vor Ort</a><a href="#praxisbeispiel">Praxisbeispiel</a>
       <a href="#ergebnisse">Ergebnisse</a><a href="#ueber">Über mich</a><a href="#faq">FAQ</a>
-      <a href="https://tsa-impressum.vercel.app/" target="_blank" rel="noopener">Impressum</a><a href="https://tsa-datenschutz.vercel.app/" target="_blank" rel="noopener">Datenschutz</a>
+      <a href="https://tsa-impressum.vercel.app/" target="_blank" rel="noopener">Impressum</a><a href="https://tsa-datenschutz.vercel.app/" target="_blank" rel="noopener">Datenschutz</a><a href="#cookie-einstellungen" id="ccOpen">Cookie-Einstellungen</a>
     </nav>
     <div class="copy"><span>© 2026 TSA Connect GmbH · Düsseldorf</span><span>tsa-connect.de</span></div>
   </div>
 </footer>
+
+<!-- ============ COOKIE-HINWEIS ============ -->
+<div class="cc" id="cc" role="dialog" aria-labelledby="ccTitle" aria-describedby="ccText" hidden>
+  <p class="cc-t" id="ccTitle">Cookies für die Statistik</p>
+  <p id="ccText">Darf ich mit Google Analytics messen, wie diese Seite genutzt wird? Dabei werden Cookies gesetzt und Daten an Google übertragen, auch in die USA. Ihre Wahl können Sie jederzeit ganz unten unter „Cookie-Einstellungen“ ändern. Details in der <a href="https://tsa-datenschutz.vercel.app/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
+  <div class="cc-btns">
+    <button type="button" class="cc-btn" data-cc="0">Ablehnen</button>
+    <button type="button" class="cc-btn" data-cc="1">Akzeptieren</button>
+  </div>
+</div>
+
+<script>
+/* Cookie-Hinweis: Google Analytics wird erst nach Klick auf "Akzeptieren" geladen. */
+(function(){
+  var GA_ID='G-MTDSRV8M1E',KEY='tsa-consent',MAX_AGE=365*24*3600*1000;
+  var box=document.getElementById('cc'),loaded=false,granted=false;
+  function read(){try{var v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&typeof v.a==='boolean'&&Date.now()-v.t<MAX_AGE)return v.a;}catch(e){}return null;}
+  function save(a){try{localStorage.setItem(KEY,JSON.stringify({a:a,t:Date.now()}));}catch(e){}}
+  function loadGA(){
+    window['ga-disable-'+GA_ID]=false;
+    if(loaded){window.gtag('consent','update',{analytics_storage:'granted'});return;}
+    loaded=true;
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=function(){window.dataLayer.push(arguments);};
+    window.gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
+    window.gtag('js',new Date());
+    window.gtag('config',GA_ID,{allow_google_signals:false,allow_ad_personalization_signals:false});
+    var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(s);
+  }
+  function stopGA(){
+    window['ga-disable-'+GA_ID]=true;
+    if(loaded&&window.gtag)window.gtag('consent','update',{analytics_storage:'denied'});
+    var h=location.hostname,doms=['',h,'.'+h,'.'+h.split('.').slice(-2).join('.')];
+    document.cookie.split(';').forEach(function(c){
+      var n=c.split('=')[0].trim();
+      if(n==='_ga'||n.indexOf('_ga_')===0)doms.forEach(function(d){document.cookie=n+'=; Max-Age=0; path=/'+(d?'; domain='+d:'');});
+    });
+  }
+  function decide(a){granted=a;save(a);if(box)box.hidden=true;if(a)loadGA();else stopGA();}
+  window.tsaTrack=function(name,params){if(granted&&loaded&&window.gtag)window.gtag('event',name,params||{});};
+  if(box)box.querySelectorAll('[data-cc]').forEach(function(b){b.addEventListener('click',function(){decide(b.getAttribute('data-cc')==='1');});});
+  var open=document.getElementById('ccOpen');
+  if(open)open.addEventListener('click',function(e){e.preventDefault();if(!box)return;box.hidden=false;var f=box.querySelector('[data-cc]');if(f)f.focus();});
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="tel:"]');if(a)window.tsaTrack('phone_click',{link_url:a.getAttribute('href')});});
+  var c=read();
+  if(c===true){granted=true;loadGA();}else if(c===null&&box){box.hidden=false;}
+})();
+</script>
 
 <script>
 /* Navigation (Handy-Menü) */
@@ -1442,7 +1503,7 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
       nextUrl=document.getElementById('nextUrl');
   if(nextUrl) nextUrl.value=location.origin+location.pathname+'#danke';
   function showDanke(){if(live)live.style.display='none';if(danke){danke.classList.add('on');danke.scrollIntoView({block:'center',behavior:'smooth'});}}
-  if(location.hash==='#danke') setTimeout(showDanke,60);
+  if(location.hash==='#danke'){setTimeout(showDanke,60);if(window.tsaTrack)tsaTrack('generate_lead',{form_name:'rueckruf'});}
   function clearErr(){errBox.classList.remove('on');errBox.innerHTML='';}
   function validate(){
     var ok=true;
@@ -1475,7 +1536,7 @@ footer .copy{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.08);margin-
       var data=await res.json().catch(function(){return null;});
       ok=res.ok&&data&&(data.success===true||data.success==='true');
     }catch(err){ok=false;}
-    if(ok){showDanke();return;}
+    if(ok){showDanke();if(window.tsaTrack)tsaTrack('generate_lead',{form_name:'rueckruf'});return;}
     HTMLFormElement.prototype.submit.call(form);
   });
 })();
